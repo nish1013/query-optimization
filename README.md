@@ -19,6 +19,8 @@ async function connectToDatabase(): Promise<Db> {
   return db;
 }
 ```
+- Design your data model to fit your application's specific use cases and query patterns.
+- Avoid embedding large amounts of data in a single document, as it can impact query performance.
 
 2. Use Indexes:
 
@@ -30,7 +32,9 @@ async function createIndexes(collection: Collection): Promise<void> {
   await collection.createIndex({ age: 1 }); // Index on the 'age' field
 }
 ```
-
+  - Identify the most frequently used fields in your queries and create indexes on those fields.
+  - Compound indexes can be beneficial for queries that involve multiple fields.
+  - Use sparse indexes for fields that have a high number of missing values.
 3. Explain and Analyze Queries:
 
 ```typescript
@@ -42,6 +46,8 @@ async function explainQuery(collection: Collection): Promise<void> {
   console.log(explainResult);
 }
 ```
+ - Use the `explain()` method to analyze how queries are executed and identify potential performance bottlenecks.
+ - Review the query execution plan to ensure that indexes are being used efficiently.
 
 4. Limit the Data Returned:
 
@@ -55,6 +61,7 @@ async function getSpecificFields(collection: Collection): Promise<void> {
   console.log(result);
 }
 ```
+- Use the `projection` parameter in queries to retrieve only the necessary fields, reducing data transfer and improving performance.
 
 5. Use Covered Queries:
 
@@ -68,6 +75,8 @@ async function coveredQuery(collection: Collection): Promise<void> {
   console.log(result);
 }
 ```
+ - Covered queries are queries where the index contains all the fields needed, and MongoDB can fulfill the query from the index without examining the actual documents.
+- Covered queries can significantly reduce query execution time.
 
 6. Utilize Aggregation Pipeline:
 
@@ -83,6 +92,7 @@ async function aggregationPipeline(collection: Collection): Promise<void> {
   console.log(result);
 }
 ```
+ - For complex data manipulation and analysis, use the aggregation pipeline, which can perform multiple stages of data processing in a single query.
 
 7. Use `sort()` and `limit()` Efficiently:
 
@@ -97,6 +107,8 @@ async function sortedLimitedQuery(collection: Collection): Promise<void> {
   console.log(result);
 }
 ```
+- When sorting large result sets, use indexes that support the sorting order to avoid in-memory sorting.
+
 
 8. Regularly Monitor and Analyze Performance:
 
@@ -118,3 +130,6 @@ async function sortedLimitedQuery(collection: Collection): Promise<void> {
 ```
 
 Please note that these examples demonstrate the concept of optimized MongoDB queries using TypeScript. The actual implementation and data model will depend on the specific requirements and use cases of your application.
+
+# References
+1. [Query Optimization](https://www.mongodb.com/docs/manual/core/query-optimization/#:~:text=A%20covered%20query%20is%20a,are%20in%20the%20same%20index.)
